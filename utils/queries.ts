@@ -22,6 +22,12 @@ export async function fetchData(url: string, opts?: IDictionary<any>) {
   } else if (root.indexOf('http') !== 0) {
     root = 'http://api:8081/api';
   }
+
+  if (!root) {
+    root = 'http://3.211.248.180:8081';
+  }
+  console.info('fetch url: ', `${root}${url}`);
+
   const defaultOpts = {
     headers: {
       ...authHeaders,

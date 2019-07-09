@@ -16,7 +16,7 @@
     "lint": "npm-run-all --parallel lint:client lint:server",
     "lint:client": "tslint -c tslint.json -t stylish -p ./tsconfig.json",
     "lint:server": "tslint -c tslint.json -t stylish -p ./server/tsconfig.json",
-    "start": "NODE_ENV=production node .build",
+    "start": "NODE_ENV=production API_URL=http://3.211.248.180:8081/api node .build",
     "format": "prettier --write \"pages/**/*.{ts,tsx,css}\" \"components/**/*.{ts,tsx}\" \"utils/**/*.{ts,tsx}\" \"data/**/*.{ts,tsx}\" \"models/**/*.{ts,tsx}\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
