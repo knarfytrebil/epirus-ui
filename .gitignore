@@ -1,0 +1,7 @@
+.idea
+.env
+.next
+node_modules
+graveyard
+.build
+.DS_Store

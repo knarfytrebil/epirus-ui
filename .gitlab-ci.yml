@@ -1,0 +1,168 @@
+image: quay.io/lifechurch/k8s-deploy-helper:latest
+
+variables:
+  KUBE_DOMAIN: explorer.epirus.web3labs.com
+  AUTH_DOMAIN: auth.epirus.blk.io
+  KUBE_NAMESPACE: default
+  PORT: '3000'
+  API_URL: https://$CI_JOB_NAME.api.$KUBE_DOMAIN
+  KDH_SKIP_KUBEVAL: "true"
+
+stages:
+  - build
+  - dockerbuild
+  - review
+  - staging
+  - smoke
+  - canary
+  - production
+  - destroy-canary
+  - taglatest
+
+build:
+  image: node:8.11.3
+  stage: build
+  before_script:
+    - npm install
+  script:
+    - npm run build
+    - npm run lint
+  artifacts:
+    paths:
+      - Dockerfile
+      - kubernetes/**
+      - .build/**
+      - entrypoint.sh
+    expire_in: 1 week
+
+docker-build:
+  stage: dockerbuild
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://localhost:2375
+  services:
+    - docker:dind
+  script:
+    - command build
+    - echo BUILD FINISHED
+
+review:
+  stage: staging
+  script:
+    - command deploy
+  environment:
+    name: $CI_JOB_NAME-www
+    url: https://$CI_JOB_NAME.$KUBE_DOMAIN
+  only:
+    - master
+
+review-smoke:
+  stage: smoke
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://localhost:2375
+    GIT_STRATEGY: none
+  services:
+    - docker:dind
+  allow_failure: true
+  script:
+    - docker pull registry.gitlab.com/web3labs/epirus/smoke-tests:latest
+    - docker run registry.gitlab.com/web3labs/epirus/smoke-tests:latest headless
+  only:
+    - master
+
+staging:
+  stage: staging
+  variables:
+    API_AUTHORITY: https://staging.auth.epirus.blk.io/auth/realms/staging/
+  script:
+    - command deploy
+  environment:
+    name: $CI_JOB_NAME-www
+    url: https://$CI_JOB_NAME.$KUBE_DOMAIN
+  only:
+    - master
+
+web3labs-asia-01:
+  stage: production
+  script:
+    - command deploy
+  environment:
+    name: $CI_JOB_NAME-www
+    url: https://$CI_JOB_NAME.$KUBE_DOMAIN
+  only:
+    - master
+  when: manual
+  allow_failure: false
+
+microsoft-asia-01:
+  stage: production
+  script:
+    - command deploy
+  environment:
+    name: $CI_JOB_NAME-www
+    url: https://$CI_JOB_NAME.$KUBE_DOMAIN
+  only:
+    - master
+  when: manual
+  allow_failure: false
+
+eximchain:
+  stage: production
+  variables:
+    API_AUTHORITY: https://production.$AUTH_DOMAIN/auth/realms/eximchain/
+  script:
+    - command deploy
+  environment:
+    name: $CI_JOB_NAME-www
+    url: https://$CI_JOB_NAME.$KUBE_DOMAIN
+  only:
+    - master
+  when: manual
+  allow_failure: false
+
+mainnet:
+  stage: production
+  script:
+    - command deploy
+  environment:
+    name: $CI_JOB_NAME-www
+    url: https://$CI_JOB_NAME.$KUBE_DOMAIN
+  only:
+    - master
+  when: manual
+  allow_failure: false
+
+
+taglatest:
+  stage: taglatest
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://localhost:2375
+    GIT_STRATEGY: none
+  services:
+    - docker:dind
+  allow_failure: false
+  script:
+    - command push
+  only:
+    - master
+
+deploy-free:
+  stage: taglatest
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_HOST: tcp://localhost:2375
+    GIT_STRATEGY: none
+  services:
+    - docker:dind
+  when: manual
+  allow_failure: false
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - docker pull $CI_REGISTRY_IMAGE:latest
+    - docker tag $CI_REGISTRY_IMAGE:latest web3labs/epirus-free-web:latest
+    - docker login -u web3labsci -p fZWfZCYsZos2pp6H
+    - docker push web3labs/epirus-free-web:latest
+  only:
+    - master

@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "preserve",
+    "lib": ["dom", "es2017"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noUnusedParameters": true,
+    "preserveConstEnums": true,
+    "removeComments": false,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": false,
+    "strictNullChecks": false,
+    "target": "esnext"
+  },
+  "formatCodeOptions": {
+    "identSize": 2,
+    "tabSize": 2
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

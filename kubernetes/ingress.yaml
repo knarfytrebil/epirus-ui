@@ -1,0 +1,27 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: $CI_ENVIRONMENT_SLUG
+  namespace: $KUBE_NAMESPACE
+  labels:
+    app: $CI_ENVIRONMENT_SLUG
+    pipeline_id: "$CI_PIPELINE_ID"
+    build_id: "$CI_JOB_ID"
+    commit: "$CI_COMMIT_SHA"
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+
+spec:
+  tls:
+  - hosts:
+    - $CI_ENVIRONMENT_HOSTNAME
+    secretName: $CI_ENVIRONMENT_SLUG
+  rules:
+  - host: $CI_ENVIRONMENT_HOSTNAME
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: $CI_ENVIRONMENT_SLUG
+          servicePort: $PORT
