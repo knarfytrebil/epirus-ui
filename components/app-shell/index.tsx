@@ -104,11 +104,11 @@ class AppShell extends React.Component<IAppShellProps, IAppShellState> {
           div.mainContentDesktop {
             position: relative;
             left: ${MENU_SIDE_DESKTOP_WIDTH}px;
-            width: calc(100% - 300px);
+            width: calc(100% - 245px);
             min-height: ${dimensionsConfig
               ? `${dimensionsConfig.height - HEADER_HEIGHT}px`
               : 'auto'};
-            margin: 0 30px 45px;
+            margin: 0 5px 45px;
           }
           div.mainContentMobile {
             width: calc(100% - 48px);

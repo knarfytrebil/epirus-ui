@@ -12,4 +12,5 @@ routes
   .add('tokens', '/tokens/:detailsHash/:tab?')
   .add('transactions', '/transactions/:detailsHash/:tab?')
   .add('metadata', '/metadata/:detailsHash/:tab?')
+  .add('monitor', '/monitor/:detailsHash/:tab?')
 ;

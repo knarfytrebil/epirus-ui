@@ -3,7 +3,7 @@ import { RouterProps } from 'next-server/router';
 import { withRouter } from 'next/router';
 import AppShell from '../components/app-shell';
 import { Loading } from '../components';
-const initPath = '/contracts';
+const initPath = '/monitor';
 
 export interface IIndexProps {
   router: RouterProps;

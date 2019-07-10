@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "debug": "npm run build:server && node -r dotenv/config --inspect .build",
-    "dev": "export $(cat .env | xargs) && npm-run-all --parallel build:client:dev nodemon",
+    "dev": "npm run build && export $(cat .env | xargs) && npm-run-all --parallel build:client:dev nodemon",
     "nodemon": "nodemon -e ts -w \"./server\" -x \"npm run debug\"",
     "build": "npm-run-all --parallel build:client build:server",
     "postbuild": "npm run build:next",
@@ -16,7 +16,7 @@
     "lint": "npm-run-all --parallel lint:client lint:server",
     "lint:client": "tslint -c tslint.json -t stylish -p ./tsconfig.json",
     "lint:server": "tslint -c tslint.json -t stylish -p ./server/tsconfig.json",
-    "start": "NODE_ENV=production API_URL=http://3.211.248.180:8081/api node .build",
+    "start": "NODE_ENV=production API_URL=http://3.211.248.180/api node .build",
     "format": "prettier --write \"pages/**/*.{ts,tsx,css}\" \"components/**/*.{ts,tsx}\" \"utils/**/*.{ts,tsx}\" \"data/**/*.{ts,tsx}\" \"models/**/*.{ts,tsx}\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -60,6 +60,7 @@
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-dropdown": "^1.6.4",
-    "smoothscroll-polyfill": "^0.4.4"
+    "smoothscroll-polyfill": "^0.4.4",
+    "react-iframe": "^1.8.0"
   }
 }

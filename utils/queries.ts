@@ -24,7 +24,7 @@ export async function fetchData(url: string, opts?: IDictionary<any>) {
   }
 
   if (!root) {
-    root = 'http://3.211.248.180:8081';
+    root = 'http://3.211.248.180/api';
   }
   console.info('fetch url: ', `${root}${url}`);
 

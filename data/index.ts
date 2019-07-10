@@ -13,3 +13,4 @@ export * from './data-tokens-mobile';
 export * from './data-transactions';
 export * from './data-transactions-mobile';
 export * from '../style-config';
+export const MONITOR_URL = "http://3.211.248.180:8091/";
