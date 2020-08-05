@@ -53,7 +53,7 @@
     "big.js": "^5.2.2",
     "classnames": "^2.2.6",
     "clipboard": "^2.0.4",
-    "fastify": "^2.1.0",
+    "fastify": "^2.15.1",
     "next": "^8.0.3",
     "next-routes": "^1.4.2",
     "oidc-client": "^1.7.1",
